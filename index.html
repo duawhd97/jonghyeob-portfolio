@@ -1120,7 +1120,7 @@
 <!-- ==================== FIREBASE TRACKER ==================== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, runTransaction, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getDatabase, ref, runTransaction, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBiWQBa8JDd2vWI3Xt8j7MkHYOOFyzIrHg",
@@ -1164,10 +1164,11 @@
   // 지금 포트폴리오를 열고 있는 사람 수를 실시간으로 추적
   const sessionId = crypto.randomUUID();
   const onlineRef = ref(db, 'online/' + sessionId);
+
   set(onlineRef, true);
-  window.addEventListener('beforeunload', () => {
-    set(onlineRef, null);
-  });
+
+  // 브라우저 종료 / 네트워크 끊김 시 자동 삭제
+  onDisconnect(onlineRef).remove();
 
   // ── 세션 체류 시간 추적 ──
   // 프로젝트 상세 페이지에서 얼마나 머물렀는지 기록
