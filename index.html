@@ -1139,7 +1139,7 @@
     if (scrollableHeight <= 0) return;
 
     var progress = scrollTop / scrollableHeight;
-    if (progress >= 0.9) {
+    if (progress >= 0.95) {
       state.readThresholdReached = true;
       if (typeof window._handleProjectReadThreshold === 'function') {
         window._handleProjectReadThreshold(state.activeProjectId);
