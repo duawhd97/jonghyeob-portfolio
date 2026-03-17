@@ -1405,6 +1405,7 @@
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById(id + '-page').classList.add('active');
     resetProjectEngagement(id);
+    logPageView(id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setGnbDetailMode(true);
     setTimeout(updateDetailSubnavOnScroll, 80);
@@ -1493,6 +1494,9 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
+  function logPageView(page) {
+  set(ref(db, 'sessions/' + sessionId + '/pages/' + page), true);
+}
   function incrementCounter(path) {
     return runTransaction(ref(db, path), function(v) {
       return (v || 0) + 1;
@@ -1524,10 +1528,41 @@
 
   // ── 실시간 온라인 사용자 (Presence) ──
   const sessionId = crypto.randomUUID();
+  const sessionStart = Date.now();
+  
   const onlineRef = ref(db, 'online/' + sessionId);
+  const sessionRef = ref(db, 'sessions/' + sessionId);
 
   set(onlineRef, true);
   onDisconnect(onlineRef).remove();
+
+  set(sessionRef, {
+  start: Date.now(),
+  startReadable: new Date().toLocaleString(),
+  referrer: document.referrer || 'direct',
+  path: window.location.pathname,
+  userAgent: navigator.userAgent
+});
+
+// 방문 시작 기록
+set(sessionRef, {
+  start: sessionStart,
+  referrer: document.referrer || 'direct',
+  userAgent: navigator.userAgent
+});
+
+// 페이지 떠날 때 기록
+window.addEventListener('beforeunload', () => {
+  const duration = Math.floor((Date.now() - sessionStart) / 1000);
+
+  set(sessionRef, {
+    start: sessionStart,
+    end: Date.now(),
+    duration: duration,
+    referrer: document.referrer || 'direct',
+    userAgent: navigator.userAgent
+  });
+});
 
   // ── 세션 체류 시간 추적 ──
   let projectStartTime = null;
