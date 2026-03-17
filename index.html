@@ -656,7 +656,7 @@
     <section class="detail-section">
       <h2>Solution</h2>
       <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;">1. Store Dashboard 설계</h3>
-      <p>매장 운영자가 디바이스 상태와 매장 이벤트를 한눈에 파악할 수 있는 운영 중심 대시보드 구조를 설계했습니다.</p>
+      <p>디바이스 중심 구조로는 매장 전체 상황을 한눈에 파악하기 어렵다고 판단했습니다. 이에 따라 디바이스 상태가 아닌 매장 운영 상태를 기준으로 정보를 재구성하여, 운영자가 즉시 대응할 수 있는 대시보드를 설계했습니다.</p>
       <div class="detail-callout">
         <ul>
           <li>ESL 상태 요약</li>
@@ -667,11 +667,11 @@
         </ul>
       </div>
       <h3 style="font-size:16px;font-weight:600;margin:24px 0 12px;">2. Digital Twin 기반 Map View</h3>
-      <p>기존 데이터 모델을 확장하여 위치 기반 데이터 구조를 설계했습니다.</p>
+      <p>기존 구조에서는 장애 발생 위치를 직관적으로 파악할 수 없다는 한계가 있었습니다. 이를 해결하기 위해 위치 기반 데이터 구조(Floor / Zone)를 추가했습니다.</p>
       <div class="code-block">Customer → Store → Floor → Zone → Shelf → Device</div>
-      <p>이 구조를 기반으로 매장 공간 위에서 디바이스 상태와 이벤트를 확인할 수 있는 Digital Twin 기반 Map View 기능을 기획했습니다.</p>
+      <p>이 구조를 기반으로 매장 공간 위에서 디바이스 상태와 이벤트를 확인할 수 있는 Digital Twin 기반 Map View를 설계했습니다.</p>
       <h3 style="font-size:16px;font-weight:600;margin:24px 0 12px;">3. Vision + Load Cell 이중 검증 구조</h3>
-      <p>기존 Vision 카메라의 오판 문제를 해결하기 위해 Load Cell(무게 센서) 기반 이중 검증 구조를 제안했습니다.</p>
+      <p>Vision 단독으로는 오판률 문제와 실시간 감지 한계가 존재한다고 판단했습니다. 이에 따라 이벤트 기반 트리거 구조를 설계하고, Load Cell을 결합한 이중 검증 방식을 적용했습니다.</p>
       <div class="detail-callout">
         <ul>
           <li>Load Cell 센서가 상품 무게 변화를 감지</li>
@@ -831,11 +831,12 @@
     </section>
     <section class="detail-section">
       <h2>Solution</h2>
-      <p>PRD 기반 입력 방식이 더 안정적이라는 결과를 기반으로 프로세스를 재정의했습니다.</p>
+      <p>Test A / B 비교 결과, PRD 기반 입력 방식이 기능 정의와 사용자 흐름을 더 명확하게 반영하며 동작 가능한 수준의 결과물을 생성할 수 있음을 확인했습니다.
+        <br>이에 따라, 정적인 산출물 중심의 검증 방식이 아닌 실제 동작 기반 검증 방식으로 전환해야 한다고 판단했습니다.</p>
       <p style="margin-top:12px;">기존:</p>
       <div class="code-block">요구사항 정리 → 와이어프레임 제작 → 디자인 제작 → 개발 전달</div>
       <p style="margin-top:12px;">개선:</p>
-      <div class="code-block">PRD 작성 → AI 기반 워킹 프로토타입 생성 → 동작 검증 → 개발 전달</div>
+      <div class="code-block">PRD 작성 → AI 기반 워킹 프로토타입 생성 → 실제 동작 기반 검증 → 개발 전달</div>
     </section>
     <section class="detail-section">
       <h2>Result</h2>
@@ -961,11 +962,11 @@
     <section class="detail-section">
       <h2>Solution</h2>
       <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;">1. 자재 공급 승인 프로세스 개선</h3>
-      <div class="code-block">자재 1개 → 다수 공급업체 등록 가능 → 하나의 보고서에서 관리</div>
+      <div class="code-block">자재 단위로 공급업체를 1:1로 관리하던 구조를 1:N 구조로 확장하여 하나의 보고서에서 통합 관리할 수 있도록 설계했습니다.</div>
       <h3 style="font-size:16px;font-weight:600;margin:24px 0 12px;">2. Knowledge Data 공유 기능 설계</h3>
-      <p>본사 품질 관리 담당자가 체크리스트를 설정하고, 현장 프로젝트에서 해당 데이터를 불러와 활용할 수 있는 구조를 설계. 품질 관리 지식이 조직 단위로 축적되는 구조를 구현했습니다.</p>
+      <p>프로젝트 단위로 분산되어 있던 체크리스트를 본사(Admin) 기준으로 관리하고, 현장에서 재사용할 수 있도록 구조를 재설계했습니다.</p>
       <h3 style="font-size:16px;font-weight:600;margin:24px 0 12px;">3. 품질 시험 설정 확장</h3>
-      <p>압축 강도 시험 최대 3회 → 6회로 확장하여 고층 건물 품질 시험 대응 및 향후 법규 변경 대응이 가능한 유연한 구조를 설계했습니다.</p>
+      <p>압축 강도 시험을 최대 3회만 가능한 구조에서 6회로 확장하여 현장 조건 및 향후 법규 변화에 대응할 수 있도록 시험 차수를 유연하게 설정 가능한 구조로 확장했습니다.</p>
     </section>
     <section class="detail-section">
       <h2>Result</h2>
@@ -1060,24 +1061,24 @@
     </section>
     <section class="detail-section">
       <h2>Overview</h2>
-      <p>CubeX는 Kubernetes 기반의 클라우드 네이티브 PaaS 솔루션으로, 애플리케이션 배포와 운영을 효율적으로 관리할 수 있도록 지원하는 플랫폼입니다. 경북대학교 납품 계약을 기반으로 MVP 검증을 빠르게 진행해야 하는 상황에서 제품 초기 버전을 설계했습니다.</p>
+      <p>CubeX는 Kubernetes 기반의 클라우드 네이티브 PaaS 솔루션으로, 복잡한 애플리케이션 배포 및 운영 과정을 UI 기반으로 단순화하여 비전문가도 쉽게 사용할 수 있도록 설계된 플랫폼입니다. 경북대학교 납품을 위한 MVP를 빠르게 검증해야 하는 상황에서, 기술적 복잡성을 낮추고 실제 운영 환경에서 활용 가능한 구조를 설계하는 데 집중했습니다.</p>
     </section>
     <section class="detail-section">
       <h2>Problem</h2>
       <ul>
-        <li><strong>복잡한 애플리케이션 배포 과정</strong> — 컨테이너 이미지 관리, Deployment 설정, Pod 관리, 서비스 네트워크 설정 등 높은 Kubernetes 이해도가 필요</li>
-        <li><strong>운영 상태 모니터링의 어려움</strong> — CLI 중심 환경에서만 애플리케이션 상태, Pod, 리소스 사용량 확인 가능</li>
-        <li><strong>애플리케이션 관리 기능의 분산</strong> — 생성, 배포, 스케일링, 삭제 등 기능이 분산되어 사용성 저하</li>
+        <li><strong>배포 과정의 높은 진입 장벽</strong> — 컨테이너 이미지 관리, Deployment 설정, 네트워크 구성 등 복잡한 설정을 CLI 기반으로 수행해야 하며 비전문가의 접근이 어려움</li>
+        <li><strong>운영 상태 모니터링의 어려움</strong> — 애플리케이션 상태, Pod, 리소스 사용량을 개별적으로 확인해야 하며 전체 시스템 상태를 직관적으로 파악하기 어려움</li>
+        <li><strong>애플리케이션 관리 기능의 분산</strong> — 생성, 배포, 스케일링, 삭제 등 기능이 분산되어 사용성 및 운영 효율 저하</li>
       </ul>
     </section>
     <section class="detail-section">
       <h2>Solution</h2>
       <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;">1. One-Step Application 생성 기능</h3>
-      <p>UI 기반으로 애플리케이션 이름, 컨테이너 이미지, 리소스 설정, 네트워크 설정을 입력하여 바로 생성할 수 있도록 CLI 기반 설정 과정을 단순화했습니다.</p>
-      <h3 style="font-size:16px;font-weight:600;margin:24px 0 12px;">2. Application Management 기능</h3>
-      <p>애플리케이션 상태 확인, 실행 중인 Pod 확인, 수정, 삭제 등을 통합 관리할 수 있는 기능을 설계했습니다.</p>
-      <h3 style="font-size:16px;font-weight:600;margin:24px 0 12px;">3. Auto Scaling 관리 기능</h3>
-      <p>최소/최대 Pod 수, CPU 사용률 기준 등의 조건을 설정하여 애플리케이션 스케일링 정책을 관리할 수 있도록 설계했습니다.</p>
+      <p>복잡한 Kubernetes 배포 과정을 단순화하기 위해, 이미지 설정부터 배포까지의 과정을 하나의 흐름으로 통합했습니다. 기본 설정 / 상세 설정을 분리하여 사용자 숙련도에 따라 선택적으로 사용할 수 있도록 구성하고, 최소한의 입력만으로 애플리케이션 생성이 가능하도록 설계했습니다.</p>
+      <h3 style="font-size:16px;font-weight:600;margin:24px 0 12px;">2. 통합 Application Management 기능</h3>
+      <p>분산된 관리 기능으로 인해 운영 효율이 저하되는 문제를 해결하기 위해, 애플리케이션 상태, Pod, 리소스, 로그 등을 하나의 화면에서 통합적으로 확인하고 제어할 수 있는 구조를 설계했습니다.생성, 수정, 배포, 롤백 등 주요 작업을 단일 UI에서 수행할 수 있도록 구성했습니다.</p>
+      <h3 style="font-size:16px;font-weight:600;margin:24px 0 12px;">3. Auto Scaling 설정 단순화</h3>
+      <p>복잡한 Kubernetes 오토스케일링 설정을 단순화하기 위해, 필수 입력 값 중심으로 설정 구조를 재정의했습니다. 설정 결과를 직관적으로 확인할 수 있도록 구성하여, 사용자가 스케일링 동작을 예측할 수 있도록 설계했습니다.</p>
     </section>
     <section class="detail-section">
       <h2>Result</h2>
