@@ -1245,6 +1245,12 @@
     return gnbHeight + detailNavHeight + 16;
   }
 
+  function scrollToPageTop() {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }
+
   function updateDetailSubnavOnScroll() {
     var activePage = document.querySelector('.page.active[id$="-page"]:not(#main-page)');
     if (!activePage) return;
@@ -1405,16 +1411,21 @@
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById(id + '-page').classList.add('active');
     resetProjectEngagement(id);
-    logPageView(id);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window._logPageView === 'function') {
+      window._logPageView(id);
+    }
+    scrollToPageTop();
     setGnbDetailMode(true);
-    setTimeout(updateDetailSubnavOnScroll, 80);
+    requestAnimationFrame(function() {
+      scrollToPageTop();
+      updateDetailSubnavOnScroll();
+    });
   }
   function showMain() {
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById('main-page').classList.add('active');
     resetProjectEngagement(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToPageTop();
     setGnbDetailMode(false);
     setActiveDetailSubnav('');
   }
@@ -1494,9 +1505,9 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  function logPageView(page) {
-  set(ref(db, 'sessions/' + sessionId + '/pages/' + page), true);
-}
+  window._logPageView = function(page) {
+    return set(ref(db, 'sessions/' + sessionId + '/pages/' + page), true);
+  };
   function incrementCounter(path) {
     return runTransaction(ref(db, path), function(v) {
       return (v || 0) + 1;
