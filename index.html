@@ -468,7 +468,7 @@
       <h2 class="section-title">Profile</h2>
       <div class="profile-grid">
         <div class="profile-block">
-          <h3>경력 (총 2년 10개월)</h3>
+          <h3>경력 (총 <span id="career-duration"></span>)</h3>
           <div class="career-item">
             <div class="career-header">
               <span class="career-company">솔루엠</span>
@@ -1263,6 +1263,22 @@
     document.body.scrollTop = 0;
   }
 
+  function renderCareerDuration() {
+    var el = document.getElementById('career-duration');
+    if (!el) return;
+
+    var startYear = 2023;
+    var startMonthIndex = 5; // June (0-based)
+    var now = new Date();
+    var totalMonths = (now.getFullYear() - startYear) * 12 + (now.getMonth() - startMonthIndex);
+
+    if (totalMonths < 0) totalMonths = 0;
+
+    var years = Math.floor(totalMonths / 12);
+    var months = totalMonths % 12;
+    el.textContent = years + '년 ' + months + '개월';
+  }
+
   function updateDetailSubnavOnScroll() {
     var activePage = document.querySelector('.page.active[id$="-page"]:not(#main-page)');
     if (!activePage) return;
@@ -1493,9 +1509,13 @@
   })();
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', buildDetailSubnavs);
+    document.addEventListener('DOMContentLoaded', function() {
+      buildDetailSubnavs();
+      renderCareerDuration();
+    });
   } else {
     buildDetailSubnavs();
+    renderCareerDuration();
   }
 </script>
 
